@@ -6,7 +6,7 @@ import {
   generateRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
-} from '../utils/jwt';
+} from '../../utils/jwt';
 
 describe('JWT Utils', () => {
   const testUserId = '123e4567-e89b-12d3-a456-426614174000';

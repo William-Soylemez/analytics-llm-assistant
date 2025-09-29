@@ -1,7 +1,7 @@
 // ABOUTME: Tests for encryption utilities
 // ABOUTME: Verifies token encryption and decryption functionality
 
-import { encryptToken, decryptToken } from '../utils/encryption';
+import { encryptToken, decryptToken } from '../../utils/encryption';
 
 describe('Encryption Utils', () => {
   const testToken = 'test-oauth-token-12345';

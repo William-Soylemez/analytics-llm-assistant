@@ -1,7 +1,7 @@
 // ABOUTME: Tests for validation utilities
 // ABOUTME: Verifies email and password validation logic
 
-import { validateEmail, validatePassword } from '../utils/validators';
+import { validateEmail, validatePassword } from '../../utils/validators';
 
 describe('Validators', () => {
   describe('validateEmail', () => {

@@ -3,8 +3,8 @@
 
 import request from 'supertest';
 import express, { Request, Response, NextFunction } from 'express';
-import { errorHandler, notFoundHandler } from '../middleware/errorHandler.middleware';
-import { AuthError, ValidationError, NotFoundError } from '../utils/errors';
+import { errorHandler, notFoundHandler } from '../../middleware/errorHandler.middleware';
+import { AuthError, ValidationError, NotFoundError } from '../../utils/errors';
 
 const app = express();
 
