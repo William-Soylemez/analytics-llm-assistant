@@ -10,7 +10,7 @@ This document contains a step-by-step implementation plan for the GA Insights Pl
 ## Current Status
 **Last Updated**: 2025-09-29
 **Current Phase**: Phase 1 - Foundation
-**Next Task**: 1.6
+**Next Task**: 1.7
 
 ---
 
@@ -329,9 +329,9 @@ curl -X GET http://localhost:3001/api/auth/me \
 
 ---
 
-### Task 1.6: Google OAuth Setup ❌
-**Status**: Not Started  
-**Estimated Time**: 3-4 hours  
+### Task 1.6: Google OAuth Setup ✅
+**Status**: Complete
+**Estimated Time**: 3-4 hours
 **Dependencies**: Task 1.5
 
 **Prompt**:
@@ -378,14 +378,14 @@ Follow SPEC.md OAuth flow section. Include comprehensive error handling for OAut
 ```
 
 **Acceptance Criteria**:
-- [ ] OAuth URL generation works
-- [ ] Redirects to Google consent screen
-- [ ] Callback handles authorization code
-- [ ] Tokens stored encrypted in database
-- [ ] State parameter prevents CSRF
-- [ ] Token refresh works when expired
-- [ ] Error cases handled (denial, invalid state, etc.)
-- [ ] Frontend receives success/error callback
+- [x] OAuth URL generation works
+- [x] Redirects to Google consent screen
+- [x] Callback handles authorization code
+- [x] Tokens stored encrypted in database
+- [x] State parameter prevents CSRF
+- [x] Token refresh works when expired
+- [x] Error cases handled (denial, invalid state, etc.)
+- [x] Frontend receives success/error callback
 
 **Verification Commands**:
 ```bash
