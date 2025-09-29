@@ -1,0 +1,26 @@
+// ABOUTME: Redis configuration and client setup
+// ABOUTME: Manages Redis connection for caching and session storage
+
+import Redis from 'ioredis';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
+  maxRetriesPerRequest: 3,
+  enableReadyCheck: true,
+  retryStrategy(times) {
+    const delay = Math.min(times * 50, 2000);
+    return delay;
+  },
+});
+
+redis.on('error', (err) => {
+  console.error('Redis connection error:', err);
+});
+
+redis.on('connect', () => {
+  console.log('Redis connected successfully');
+});
+
+export default redis;
