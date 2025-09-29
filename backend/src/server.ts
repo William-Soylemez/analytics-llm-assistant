@@ -9,6 +9,7 @@ import logger from './utils/logger';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware';
 import db from './config/database';
 import redis from './config/redis';
+import authRoutes from './routes/auth.routes';
 
 dotenv.config();
 
@@ -45,6 +46,8 @@ app.get('/health', async (req, res) => {
     });
   }
 });
+
+app.use('/api/auth', authRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
