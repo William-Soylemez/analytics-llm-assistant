@@ -10,7 +10,7 @@ This document contains a step-by-step implementation plan for the GA Insights Pl
 ## Current Status
 **Last Updated**: 2025-09-29
 **Current Phase**: Phase 1 - Foundation
-**Next Task**: 1.4
+**Next Task**: 1.5
 
 ---
 
@@ -193,8 +193,8 @@ curl http://localhost:3001/nonexistent (should return 404)
 
 ---
 
-### Task 1.4: Authentication Models & Utils ❌
-**Status**: Not Started  
+### Task 1.4: Authentication Models & Utils ✅
+**Status**: Complete  
 **Estimated Time**: 2 hours  
 **Dependencies**: Task 1.3
 
@@ -236,13 +236,15 @@ Reference SPEC.md security requirements and follow best practices.
 ```
 
 **Acceptance Criteria**:
-- [ ] User model can create and retrieve users
-- [ ] Passwords are hashed with bcrypt
-- [ ] Encryption/decryption works correctly
-- [ ] JWT tokens can be generated and verified
-- [ ] Validators reject invalid inputs
-- [ ] TypeScript types are correct
-- [ ] No passwords logged or exposed
+- [x] User model can create and retrieve users
+- [x] Passwords are hashed with bcrypt (10 rounds)
+- [x] Encryption/decryption works correctly (AES-256-GCM)
+- [x] JWT tokens can be generated and verified
+- [x] Validators reject invalid inputs
+- [x] TypeScript types are correct
+- [x] No passwords logged or exposed
+- [x] Express Request type extended with user property
+- [x] Comprehensive tests written for all utilities
 
 **Verification Commands**:
 ```bash
