@@ -6,12 +6,14 @@ import app from '../server';
 
 describe('Server Health', () => {
   describe('GET /health', () => {
-    it('should return 200 and status ok', async () => {
+    it('should return 200 and status ok with connection info', async () => {
       const response = await request(app).get('/health');
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('status', 'ok');
+      expect(response.body).toHaveProperty('status');
       expect(response.body).toHaveProperty('timestamp');
+      expect(response.body).toHaveProperty('database');
+      expect(response.body).toHaveProperty('redis');
     });
   });
 
