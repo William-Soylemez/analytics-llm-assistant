@@ -2,7 +2,7 @@
 // ABOUTME: Verifies the Express server starts and responds correctly
 
 import request from 'supertest';
-import app from '../server';
+import app from '../../server';
 
 describe('Server Health', () => {
   describe('GET /health', () => {

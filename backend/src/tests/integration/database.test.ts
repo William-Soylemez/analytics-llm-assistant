@@ -1,7 +1,7 @@
 // ABOUTME: Database connection and query tests
 // ABOUTME: Verifies PostgreSQL connection and basic query functionality
 
-import { query } from '../config/database';
+import { query } from '../../config/database';
 
 describe('Database Connection', () => {
   it('should connect to database and execute query', async () => {

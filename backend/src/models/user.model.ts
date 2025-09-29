@@ -3,6 +3,7 @@
 
 import { query } from '../config/database';
 import bcrypt from 'bcrypt';
+import { encryptToken, decryptToken } from '../utils/encryption';
 
 export interface User {
   id: string;
@@ -140,4 +141,56 @@ export const verifyPassword = async (
   hashedPassword: string
 ): Promise<boolean> => {
   return bcrypt.compare(plainPassword, hashedPassword);
+};
+
+export interface GoogleTokens {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: Date;
+}
+
+/**
+ * Update Google OAuth tokens for a user
+ */
+export const updateGoogleTokens = async (
+  userId: string,
+  accessToken: string,
+  refreshToken: string,
+  expiresAt: Date
+): Promise<void> => {
+  const encryptedAccessToken = encryptToken(accessToken);
+  const encryptedRefreshToken = encryptToken(refreshToken);
+
+  await query(
+    `UPDATE users
+     SET google_access_token = $1,
+         google_refresh_token = $2,
+         token_expires_at = $3,
+         updated_at = NOW()
+     WHERE id = $4`,
+    [encryptedAccessToken, encryptedRefreshToken, expiresAt, userId]
+  );
+};
+
+/**
+ * Get decrypted Google tokens for a user
+ */
+export const getGoogleTokens = async (userId: string): Promise<GoogleTokens | null> => {
+  const result = await query(
+    `SELECT google_access_token, google_refresh_token, token_expires_at
+     FROM users
+     WHERE id = $1`,
+    [userId]
+  );
+
+  const row = result.rows[0];
+  if (!row || !row.google_access_token || !row.google_refresh_token) {
+    return null;
+  }
+
+  return {
+    accessToken: decryptToken(row.google_access_token),
+    refreshToken: decryptToken(row.google_refresh_token),
+    expiresAt: row.token_expires_at,
+  };
 };
