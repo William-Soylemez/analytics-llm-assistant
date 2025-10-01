@@ -32,37 +32,47 @@ export const initiateOAuth = async (req: Request, res: Response, next: NextFunct
  * GET /api/auth/google/callback
  */
 export const handleCallback = async (req: Request, res: Response, next: NextFunction) => {
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+
   try {
     const { code, state, error } = req.query;
 
+    logger.info('OAuth callback received', {
+      hasCode: !!code,
+      hasState: !!state,
+      hasError: !!error,
+    });
+
     // Handle user denial
     if (error) {
-      logger.warn(`OAuth denied: ${error}`);
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      return res.redirect(`${frontendUrl}/settings?oauth=denied`);
+      logger.warn(`OAuth denied by user: ${error}`);
+      return res.redirect(`${frontendUrl}/?oauth=denied&message=${encodeURIComponent('You denied access to Google Analytics')}`);
     }
 
     // Validate required parameters
     if (!code || typeof code !== 'string') {
+      logger.error('OAuth callback: Missing authorization code');
       throw new ValidationError('Authorization code is required');
     }
 
     if (!state || typeof state !== 'string') {
+      logger.error('OAuth callback: Missing state parameter');
       throw new ValidationError('State parameter is required');
     }
+
+    logger.info('Exchanging OAuth code for tokens...');
 
     // Exchange code for tokens
     const { userId } = await oauthService.handleCallback(code, state);
 
     logger.info(`OAuth successful for user ${userId}`);
 
-    // Redirect to frontend with success
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.redirect(`${frontendUrl}/settings?oauth=success`);
+    // Redirect to frontend dashboard with success
+    res.redirect(`${frontendUrl}/?oauth=success`);
   } catch (error) {
     logger.error('OAuth callback error:', error);
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.redirect(`${frontendUrl}/settings?oauth=error`);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    res.redirect(`${frontendUrl}/?oauth=error&message=${encodeURIComponent(errorMessage)}`);
   }
 };
 

@@ -49,7 +49,7 @@ app.get('/health', async (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/oauth', oauthRoutes);
+app.use('/api/auth', oauthRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

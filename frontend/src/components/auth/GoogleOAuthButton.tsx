@@ -13,7 +13,7 @@ export const GoogleOAuthButton: React.FC = () => {
     setError(null);
 
     try {
-      const response = await api.get<{ authUrl: string }>('/api/oauth/google');
+      const response = await api.get<{ authUrl: string }>('/auth/google');
       window.location.href = response.data.authUrl;
     } catch (err) {
       setError('Failed to initiate Google connection. Please try again.');

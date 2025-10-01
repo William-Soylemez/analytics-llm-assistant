@@ -36,7 +36,7 @@ export interface UserResponse {
  * Register a new user
  */
 export const register = async (data: RegisterData): Promise<AuthResponse> => {
-  const response = await api.post<AuthResponse>('/api/auth/register', data);
+  const response = await api.post<AuthResponse>('/auth/register', data);
   return response.data;
 };
 
@@ -44,7 +44,7 @@ export const register = async (data: RegisterData): Promise<AuthResponse> => {
  * Login with email and password
  */
 export const login = async (data: LoginData): Promise<AuthResponse> => {
-  const response = await api.post<AuthResponse>('/api/auth/login', data);
+  const response = await api.post<AuthResponse>('/auth/login', data);
   return response.data;
 };
 
@@ -55,7 +55,7 @@ export const logout = async (): Promise<void> => {
   const refreshToken = localStorage.getItem('refreshToken');
   if (refreshToken) {
     try {
-      await api.post('/api/auth/logout', { refreshToken });
+      await api.post('/auth/logout', { refreshToken });
     } catch (error) {
       // Logout anyway even if API call fails
       console.error('Logout API call failed:', error);
@@ -74,7 +74,7 @@ export const refreshToken = async (): Promise<string> => {
     throw new Error('No refresh token available');
   }
 
-  const response = await api.post<{ accessToken: string }>('/api/auth/refresh', {
+  const response = await api.post<{ accessToken: string }>('/auth/refresh', {
     refreshToken,
   });
 
@@ -85,6 +85,6 @@ export const refreshToken = async (): Promise<string> => {
  * Get current user info
  */
 export const getCurrentUser = async (): Promise<User> => {
-  const response = await api.get<UserResponse>('/api/auth/me');
+  const response = await api.get<UserResponse>('/auth/me');
   return response.data.user;
 };
