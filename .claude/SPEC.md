@@ -172,7 +172,7 @@ interface AnalyticsContext {
 ### Tech Stack
 - **Frontend**: React 18, TypeScript, Tailwind CSS, Vite
 - **Backend**: Node.js, Express, TypeScript
-- **Database**: PostgreSQL (hosted on AWS RDS or similar)
+- **Database**: PostgreSQL (hosted on Supabase or similar)
 - **Analytics**: Google Analytics 4 Data API v1
 - **LLM**: 
   - Development: Local Llama 3.2 (3B or 8B model) via Ollama
