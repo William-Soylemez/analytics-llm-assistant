@@ -108,3 +108,11 @@ export const logout = async (refreshToken: string): Promise<void> => {
     // Token is already invalid, no need to blacklist
   }
 };
+
+export const disconnectGoogle = async (userId: string): Promise<void> => {
+  await UserModel.update(userId, {
+    google_access_token: null,
+    google_refresh_token: null,
+    token_expires_at: null,
+  });
+};

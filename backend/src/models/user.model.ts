@@ -26,9 +26,9 @@ export interface CreateUserInput {
 export interface UpdateUserInput {
   email?: string;
   password?: string;
-  google_refresh_token?: string;
-  google_access_token?: string;
-  token_expires_at?: Date;
+  google_refresh_token?: string | null;
+  google_access_token?: string | null;
+  token_expires_at?: Date | null;
   subscription_tier?: string;
   daily_digest_enabled?: boolean;
 }

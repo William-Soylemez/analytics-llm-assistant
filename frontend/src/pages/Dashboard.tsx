@@ -5,14 +5,34 @@ import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../contexts/AuthContext';
 import { GoogleOAuthButton } from '../components/auth/GoogleOAuthButton';
 import { useSearchParams } from 'react-router-dom';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import * as authService from '../services/authService';
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
+  const queryClient = useQueryClient();
   const [oauthMessage, setOauthMessage] = useState<{
     type: 'success' | 'error' | 'denied';
     text: string;
   } | null>(null);
+
+  const disconnectMutation = useMutation({
+    mutationFn: authService.disconnectGoogle,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      setOauthMessage({
+        type: 'success',
+        text: 'Google Analytics disconnected successfully',
+      });
+    },
+    onError: () => {
+      setOauthMessage({
+        type: 'error',
+        text: 'Failed to disconnect Google Analytics. Please try again.',
+      });
+    },
+  });
 
   useEffect(() => {
     const oauthStatus = searchParams.get('oauth');
@@ -23,6 +43,8 @@ export const Dashboard: React.FC = () => {
         type: 'success',
         text: 'Successfully connected to Google Analytics!',
       });
+      // Refresh user data to show connected status
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
       // Clear query params after showing message
       const timer = setTimeout(() => {
         searchParams.delete('oauth');
@@ -163,13 +185,38 @@ export const Dashboard: React.FC = () => {
 
           <div className="max-w-md">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              Connect Google Analytics
+              Google Analytics Connection
             </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              You'll be redirected to Google to grant access to your Analytics properties.
-              We only request read-only access to your analytics data.
-            </p>
-            <GoogleOAuthButton />
+            {user?.google_connected ? (
+              <div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-green-800">Connected!</p>
+                    <p className="text-xs text-gray-600">Your Google Analytics account is connected</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => disconnectMutation.mutate()}
+                  disabled={disconnectMutation.isPending}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-red-50 border border-red-300 rounded-md hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {disconnectMutation.isPending ? 'Disconnecting...' : 'Disconnect Google Analytics'}
+                </button>
+              </div>
+            ) : (
+              <>
+                <p className="text-sm text-gray-600 mb-4">
+                  You'll be redirected to Google to grant access to your Analytics properties.
+                  We only request read-only access to your analytics data.
+                </p>
+                <GoogleOAuthButton />
+              </>
+            )}
           </div>
         </div>
 

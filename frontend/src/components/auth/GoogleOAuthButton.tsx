@@ -32,7 +32,7 @@ export const GoogleOAuthButton: React.FC = () => {
       <button
         onClick={handleConnectGoogle}
         disabled={isLoading}
-        className="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center px-6 py-2.5 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
           <path

@@ -25,7 +25,8 @@ export interface User {
   subscription_tier: string;
   daily_digest_enabled: boolean;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
+  google_connected: boolean;
 }
 
 export interface UserResponse {
@@ -87,4 +88,11 @@ export const refreshToken = async (): Promise<string> => {
 export const getCurrentUser = async (): Promise<User> => {
   const response = await api.get<UserResponse>('/auth/me');
   return response.data.user;
+};
+
+/**
+ * Disconnect Google Analytics
+ */
+export const disconnectGoogle = async (): Promise<void> => {
+  await api.post('/auth/disconnect-google');
 };

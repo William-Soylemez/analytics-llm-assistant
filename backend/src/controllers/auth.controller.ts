@@ -102,7 +102,26 @@ export const getMe = async (req: Request, res: Response, next: NextFunction) => 
         subscription_tier: req.user.subscription_tier,
         daily_digest_enabled: req.user.daily_digest_enabled,
         created_at: req.user.created_at,
+        google_connected: !!req.user.google_refresh_token,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const disconnectGoogle = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) {
+      throw new ValidationError('User not authenticated');
+    }
+
+    await authService.disconnectGoogle(req.user.id);
+
+    logger.info(`User disconnected Google Analytics: ${req.user.email}`);
+
+    res.status(200).json({
+      message: 'Google Analytics disconnected successfully',
     });
   } catch (error) {
     next(error);
